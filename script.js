@@ -1,23 +1,33 @@
-//your JS code here. If required.
-let subBtn = document.querySelector("#btn");
-let age = document.querySelector("#age");
-let name = document.querySelector("#name");
-subBtn.addEventListener('click', (e)=>{
-	e.preventDefault();
-	let fullname = name.value;
-	let currAge = parseInt(age.value);
-	if(currAge>18 && fullname!== ""){
-		let makePromise = new Promise((resolve, reject)=>{
-			setTimeout(()=>{
-				resolve(alert(`Welcome, ${fullname}. You can vote.`))
-			}, 4000)
-		})
-	}else{
-		let makePromise = new Promise((resolve, reject)=>{
-			setTimeout(()=>{
-				reject(alert(`Oh sorry ${fullname}. You aren't old enough.`))
-			}, 4000)
-		})
-	}
-	
-})
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('ageForm');
+
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const ageInput = document.getElementById('age');
+    const nameInput = document.getElementById('name');
+
+    const age = parseInt(ageInput.value);
+    const name = nameInput.value;
+
+    if (isNaN(age) || age < 1 || name.trim() === '') {
+      alert('Please enter a valid age and name.');
+      return;
+    }
+    const agePromise = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (age >= 18) {
+          resolve(`Welcome, ${name}. You can vote.`);
+        } else {
+          reject(`Oh sorry ${name}. You aren't old enough.`);
+        }
+      }, 4000);
+    });
+    agePromise.then((message) => {
+      alert(message);
+    }).catch((error) => {
+      alert(error);
+    });
+    form.reset();
+  });
+});
